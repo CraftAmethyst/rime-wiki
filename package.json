@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",
-    "serve": "vitepress serve docs"
+    "serve": "vitepress serve docs",
+    "deploy": "pnpm run build && pnpm dlx wrangler pages deploy docs/.vitepress/dist --project-name rime-wiki"
   },
   "devDependencies": {
     "vue": "3.2.44",
