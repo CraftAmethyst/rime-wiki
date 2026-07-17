@@ -1,277 +1,356 @@
-# 常用功能与命令
+# 传送命令指南
+
+服务器提供个人传送点、全服共享传送点、玩家之间的传送请求、返回上一位置和随机传送功能。
 
 ## 快速命令表
 
 | 功能 | 命令 |
 | --- | --- |
-| 主菜单 | `/menu`、`/rime`、`/help` |
-| 回主城 | `/spawn` |
-| 随机传送 | `/rtp` |
-| 传送到玩家 | `/tpa <玩家名>` |
-| 让玩家传送到你 | `/tpahere <玩家名>` |
-| 接受传送请求 | `/tpaccept`、`/tpyes` |
-| 拒绝传送请求 | `/tpdeny`、`/tpno` |
-| 设置家 | `/sethome [名称]` |
-| 回家 | `/home [名称]` |
-| 删除家 | `/delhome <名称>` |
+| 查看命令帮助 | `/ca` 或 `/ca help` |
+| 创建个人传送点 | `/setp <名称> [描述...]` |
+| 前往个人传送点 | `/tpp <名称>` |
+| 删除个人传送点 | `/delp <名称>` |
+| 查看个人传送点 | `/listp` |
+| 查看全部传送点 | `/tplist` |
+| 前往全服传送点 | `/tpg <名称>` |
+| 请求传送到玩家 | `/tpa <玩家名>` |
+| 请求玩家传送到你 | `/tpahere <玩家名>` |
+| 接受传送请求 | `/tpaccept [玩家名]` |
+| 拒绝传送请求 | `/tpdeny [玩家名]` |
+| 取消自己发出的请求 | `/tpcancel` |
 | 返回上一位置 | `/back` |
-| 查看公共传送点 | `/warps` |
-| 前往公共传送点 | `/warp <名称>` |
-| 查看余额 | `/money` |
-| 查看财富榜 | `/baltop` |
-| 玩家商店帮助 | `/qs help` |
-| 假人列表 | `/bot list` |
+| 随机传送 | `/rtp`、`/tpr` 或 `/r` |
 
-## 主菜单
+## 命令写法
 
-| 功能 | 命令 | 例子 |
-| --- | --- | --- |
-| 打开主菜单 | `/menu` | - |
-| 打开主菜单 | `/rime` | - |
-| 打开主菜单 | `/help` | - |
+完整命令以 `/ca` 开头，`/stp` 是功能相同的别名：
 
-## 传送
+```txt
+/ca list
+/stp list
+```
 
-| 功能 | 命令格式 | 例子 |
-| --- | --- | --- |
-| 回主城 | `/spawn` | - |
-| 随机传送 | `/rtp` | - |
-| 请求传送到玩家 | `/tpa <玩家名>` | `/tpa Steve` |
-| 请求玩家传送到你 | `/tpahere <玩家名>` | `/tpahere Steve` |
-| 接受传送请求 | `/tpaccept` 或 `/tpyes` | - |
-| 拒绝传送请求 | `/tpdeny` 或 `/tpno` | - |
+常用功能还提供了更短的独立命令。例如，下面两条命令效果相同：
 
-## 家
+```txt
+/ca tpp farm
+/tpp farm
+```
 
-| 功能 | 命令格式 | 例子 |
-| --- | --- | --- |
-| 设置默认家 | `/sethome` | - |
-| 设置命名家 | `/sethome <名称>` | `/sethome farm` |
-| 回默认家 | `/home` | - |
-| 回命名家 | `/home <名称>` | `/home farm` |
-| 删除家 | `/delhome <名称>` | `/delhome farm` |
+直接输入 `/ca`、`/stp`、`/ca help` 或 `/stp help` 可以在游戏内查看简要帮助。
+
+文档中的参数标记含义如下：
+
+| 写法 | 含义 |
+| --- | --- |
+| `<名称>`、`<玩家名>` | 必填，实际输入时不要带尖括号 |
+| `[描述...]`、`[玩家名]` | 可选，实际输入时不要带方括号 |
+
+传送点名称默认最长为 24 个字符，只能使用英文字母、数字、下划线 `_` 和连字符 `-`，不能包含空格。名称不区分大小写。服务器可能调整这些限制，最终以游戏内提示为准。
+
+## 个人传送点
+
+个人传送点只有自己可以查看和使用。每名玩家默认最多创建 10 个，实际上限以服务器设置为准。
+
+### 创建传送点
+
+```txt
+/setp <名称> [描述...]
+```
+
+例如，在当前位置创建一个名为 `farm` 的传送点：
+
+```txt
+/setp farm
+```
+
+创建时也可以附加描述：
+
+```txt
+/setp farm 刷铁机入口
+```
+
+模组会记录当前位置、所在世界、面对方向和视角。若同名传送点已经存在，命令会被拒绝，不会直接覆盖原位置。
+
+需要更新已有传送点时，在名称前加入 `-f`：
+
+```txt
+/setp -f farm 新的刷铁机入口
+```
+
+这会把 `farm` 更新为当前的位置和方向。没有填写新描述时，原描述也会被清空。
+
+完整写法为 `/ca setp [-f] <名称> [描述...]`。
+
+### 前往传送点
+
+```txt
+/tpp <名称>
+```
+
+例如：
+
+```txt
+/tpp farm
+```
+
+完整写法为 `/ca tpp <名称>`。
+
+### 查看传送点
+
+```txt
+/listp
+```
+
+列表会显示传送点名称、世界、坐标、朝向和描述。每个传送点后还会显示可点击的“传送”“删除”和“编辑描述”按钮。
+
+完整写法为 `/ca listp`。
+
+### 修改描述
+
+```txt
+/descp <名称> <新描述...>
+```
+
+例如：
+
+```txt
+/descp farm 刷铁机入口，请随手关门
+```
+
+这条命令只修改描述，不会改变传送点的位置。完整写法为 `/ca descp <名称> <新描述...>`。
+
+### 删除传送点
+
+```txt
+/delp <名称>
+```
+
+例如：
+
+```txt
+/delp farm
+```
+
+完整写法为 `/ca delp <名称>`。删除后不能通过命令恢复，请确认名称无误后再执行。
+
+## 全服传送点
+
+全服传送点由服务器共享，常用于主城、市场或公共设施。普通玩家可以查看并前往这些传送点。
+
+### 查看全服传送点
+
+```txt
+/listg
+```
+
+完整写法为 `/ca listg`。
+
+若要同时查看自己的个人传送点和全服传送点，可以使用：
+
+```txt
+/tplist
+```
+
+完整写法为 `/ca list`。
+
+### 前往全服传送点
+
+```txt
+/tpg <名称>
+```
+
+例如：
+
+```txt
+/tpg market
+```
+
+完整写法为 `/ca tpg <名称>`。个人传送点和全服传送点可以使用相同名称，使用 `/tpp` 或 `/tpg` 可以明确选择前往哪一种传送点。
+
+## 简易传送
+
+还可以直接在 `/ca` 后输入名称：
+
+```txt
+/ca <名称>
+```
+
+模组会依次查找：
+
+1. 同名的个人传送点。
+2. 同名的全服传送点。
+3. 同名的在线玩家。
+
+例如：
+
+```txt
+/ca farm
+/ca market
+/ca Steve
+```
+
+找到在线玩家时，普通玩家会向对方发送 TPA 请求。名称发生冲突时，个人传送点优先于全服传送点和玩家，因此建议使用 `/tpp`、`/tpg` 或 `/tpa` 明确指定目标。
+
+服务器可以关闭简易传送；无法使用时，请改用对应的完整功能命令。
+
+## 玩家传送请求
+
+### 请求传送到对方
+
+```txt
+/tpa <玩家名>
+```
+
+例如：
+
+```txt
+/tpa Steve
+```
+
+对方接受后，你会传送到对方所在的位置。完整写法为 `/ca tpa <玩家名>`。
+
+### 请求对方传送过来
+
+```txt
+/tpahere <玩家名>
+```
+
+例如：
+
+```txt
+/tpahere Steve
+```
+
+对方接受后，对方会传送到你所在的位置。完整写法为 `/ca tpahere <玩家名>`。
+
+不能向自己发送请求。请求默认在 60 秒后过期，服务器可能调整有效时间。向同一名玩家重复发送尚未处理的请求时，通常会提示请求已经存在。
+
+### 接受请求
+
+收到请求后，可以直接点击聊天消息中的“接受”按钮，也可以输入：
+
+```txt
+/tpaccept
+```
+
+没有填写玩家名时，会接受最新收到的请求。同时收到多人的请求时，可以指定发送者：
+
+```txt
+/tpaccept Steve
+```
+
+完整写法为 `/ca accept [玩家名]`。
+
+### 拒绝请求
+
+可以点击聊天消息中的“拒绝”按钮，也可以输入：
+
+```txt
+/tpdeny
+```
+
+同时收到多人的请求时，可以指定发送者：
+
+```txt
+/tpdeny Steve
+```
+
+完整写法为 `/ca deny [玩家名]`。
+
+### 取消自己发出的请求
+
+```txt
+/tpcancel
+```
+
+这会一次取消自己发出且仍在等待处理的所有请求，并通知收到请求的在线玩家。完整写法为 `/ca cancel`。
+
+## TPA 直接传送允许列表
+
+你可以允许信任的玩家以后使用 `/tpa` 时直接传送到你身边，不再需要你逐次接受。
+
+### 添加玩家
+
+```txt
+/ca tpaallow <玩家名>
+```
+
+例如：
+
+```txt
+/ca tpaallow Steve
+```
+
+### 移除玩家
+
+```txt
+/ca tpadisallow <玩家名>
+```
+
+例如：
+
+```txt
+/ca tpadisallow Steve
+```
+
+### 查看允许列表
+
+```txt
+/ca tpaallowlist
+```
+
+允许关系是单向的。你把 Steve 加入列表，只代表 Steve 可以直接 `/tpa` 到你这里，不代表你也能直接传送到 Steve。允许列表只作用于 `/tpa`，不会让 `/tpahere` 自动通过。
+
+添加或移除时可以填写离线玩家名。离线玩家在列表中可能显示为 UUID，而不是玩家名。
 
 ## 返回上一位置
 
-| 功能 | 命令 | 例子 |
-| --- | --- | --- |
-| 返回上一位置 | `/back` | - |
-
-## 公共传送点
-
-| 功能 | 命令格式 | 例子 |
-| --- | --- | --- |
-| 查看公共传送点 | `/warps` | - |
-| 前往公共传送点 | `/warp <名称>` | `/warp spawn` |
-
-## 经济
-
-参数说明：
-
-| 参数 | 含义 |
-| --- | --- |
-| `<玩家名>` | 必填，玩家名字 |
-| `<金额>` | 必填，转账金额 |
-| `[页码]` | 可选，排行榜页码 |
-
-| 功能 | 命令格式 | 例子 |
-| --- | --- | --- |
-| 查看自己的余额 | `/money` | - |
-| 查看自己的余额 | `/balance` 或 `/bal` | - |
-| 查看其他玩家余额 | `/money <玩家名>` | `/money Steve` |
-| 查看其他玩家余额 | `/balance <玩家名>` 或 `/bal <玩家名>` | `/bal Steve` |
-| 给玩家转钱 | `/pay <玩家名> <金额>` | `/pay Steve 100` |
-| 开关收款 | `/paytoggle` | - |
-| 开关某个玩家向你转账 | `/paypermission <玩家名>` 或 `/payperm <玩家名>` | `/payperm Steve` |
-| 查看财富榜 | `/balancetop` 或 `/baltop` | - |
-| 查看财富榜指定页 | `/balancetop [页码]` 或 `/baltop [页码]` | `/baltop 2` |
-
-## 玩家商店
-
-参数说明：
-
-| 参数 | 含义 |
-| --- | --- |
-| `<价格>` | 必填，商店单价 |
-| `<数量>` | 必填，物品数量 |
-| `<物品>` | 必填，要搜索的物品名 |
-| `<玩家名>` | 必填，玩家名字 |
-| `[页码]` | 可选，列表页码 |
-
-| 功能 | 命令格式 | 例子 |
-| --- | --- | --- |
-| 查看帮助 | `/qs help` | - |
-| 创建商店 | `/qs create <价格>` | `/qs create 10` |
-| 切换为出售商店 | `/qs sell` | - |
-| 切换为收购商店 | `/qs buy` | - |
-| 修改价格 | `/qs price <价格>` | `/qs price 15` |
-| 修改每次交易数量 | `/qs size <数量>` | `/qs size 64` |
-| 补货 | `/qs refill <数量>` | `/qs refill 64` |
-| 取出库存 | `/qs empty <数量>` | `/qs empty 64` |
-| 查找商品 | `/qs find <物品>` | `/qs find diamond` |
-| 查看商店列表 | `/qs browse [页码]` | `/qs browse 2` |
-| 预览商店 | `/qs preview` | - |
-| 删除商店 | `/qs remove` | - |
-| 修改展示物品 | `/qs item` | - |
-| 修改商店名称 | `/qs name` | - |
-| 查看交易记录 | `/qs history` | - |
-| 添加商店助手 | `/qs staff add <玩家名>` | `/qs staff add Steve` |
-| 移除商店助手 | `/qs staff del <玩家名>` | `/qs staff del Steve` |
-| 查看商店助手 | `/qs staff list` | - |
-| 转让当前商店 | `/qs transfer <玩家名>` | `/qs transfer Steve` |
-| 接受转让 | `/qs transfer accept` | - |
-| 拒绝转让 | `/qs transfer deny` | - |
-| 转让所有商店 | `/qs transferall <玩家名>` | `/qs transferall Steve` |
-| 接受全部转让 | `/qs transferall accept` | - |
-| 拒绝全部转让 | `/qs transferall deny` | - |
-
-## 假人
-
-参数说明：
-
-| 参数 | 含义 |
-| --- | --- |
-| `<假人名>` | 必填，假人的名字 |
-| `[皮肤名]` | 可选，假人使用的皮肤名 |
-| `[世界]` | 可选，世界名 |
-| `[时] [分] [秒]` | 可选，定时移除假人的时间 |
-| `[TickDelay]` | 可选，第一次执行动作前等待多少 tick |
-| `[TickInterval]` | 可选，每次动作之间间隔多少 tick |
-| `[DoNumber]` | 可选，动作执行次数；`-1` 表示无限次 |
-| `[UseTickTimeout]` | 可选，使用物品动作的最长使用时间；`-1` 表示不限制 |
-| `<Yaw>` | 必填，左右朝向角度 |
-| `<Pitch>` | 必填，上下朝向角度 |
-| `<X> <Y> <Z>` | 必填，坐标 |
-| `<玩家名>` | 必填，玩家名字 |
-
-### 查看假人列表
-
 ```txt
-/bot list
-/bot list [世界]
+/back
 ```
 
-例子：
+完整写法为 `/ca back`。
+
+每次通过 CrossAnywhere 成功传送后，模组都会记录传送前的位置，并在聊天中显示可点击的“返回”按钮。使用 `/back` 后，刚离开的地点会成为新的返回点，因此可以在两个位置之间往返。
+
+服务器通常也会记录死亡位置。死亡后可以尝试使用 `/back` 返回，但是否允许跨世界返回仍以服务器设置为准。
+
+如果还没有发生过可记录的传送或死亡，使用 `/back` 会提示没有可返回的位置。
+
+## 随机传送
+
+以下三条命令效果相同：
 
 ```txt
-/bot list
-/bot list world
-/bot list world_nether
-/bot list world_the_end
+/rtp
+/tpr
+/r
 ```
 
-### 创建假人
+也可以使用完整写法 `/ca rtp`。
+
+随机传送会以玩家当前位置为中心，在当前世界中寻找一个安全位置。模组默认在距离当前位置 500～5000 格的范围内搜索，最多检查 8 个候选区块。搜索范围和尝试次数可能由服务器调整。
+
+搜索期间不能再次发起随机传送。模组会检查世界边界、落脚方块、头部空间、危险方块、水和最低高度；找不到安全位置时不会传送，可以稍后再试。
+
+随机传送默认有 60 秒冷却，具体时间以游戏内提示为准。
+
+## 危险位置确认
+
+前往个人传送点、全服传送点、其他玩家或返回点时，如果目标位置不安全，模组可能会要求二次确认，也可能自动改为附近的安全位置。
+
+出现确认提示后，可以点击聊天中的“确认传送”或“取消”按钮。也可以手动输入：
 
 ```txt
-/bot create <假人名>
-/bot create <假人名> [皮肤名]
+/tpconfirm
+/tpcancelconfirm
 ```
 
-例子：
+完整写法分别为 `/ca confirm` 和 `/ca cancelconfirm`。
 
-```txt
-/bot create bot_01
-/bot create bot_01 Steve
-```
+确认默认在 15 秒后失效。确认传送会跳过本次安全检查，目标可能存在窒息、坠落、岩浆或其他危险，因此只应在确定目标位置安全时使用。
 
-### 移除假人
+## 传送限制
 
-```txt
-/bot remove <假人名>
-/bot remove <假人名> [时] [分] [秒]
-```
-
-例子：
-
-```txt
-/bot remove bot_01
-/bot remove bot_01 0 5 0
-```
-
-### 保存假人
-
-```txt
-/bot save <假人名>
-```
-
-例子：
-
-```txt
-/bot save bot_01
-```
-
-### 加载假人
-
-```txt
-/bot load <假人名>
-```
-
-例子：
-
-```txt
-/bot load bot_01
-```
-
-### 查看假人动作列表
-
-```txt
-/bot action <假人名> list
-```
-
-例子：
-
-```txt
-/bot action bot_01 list
-```
-
-### 停止假人动作
-
-```txt
-/bot action <假人名> stop <动作序号>
-/bot action <假人名> stop all
-```
-
-例子：
-
-```txt
-/bot action bot_01 stop 1
-/bot action bot_01 stop all
-```
-
-### 开始假人动作
-
-```txt
-/bot action <假人名> start <动作名> [动作参数]
-```
-
-### 假人动作表
-
-| 动作 | 命令格式 | 例子 |
-| --- | --- | --- |
-| 攻击实体 | `/bot action <假人名> start attack [TickDelay] [TickInterval] [DoNumber]` | `/bot action bot_01 start attack 0 20 -1` |
-| 破坏方块 | `/bot action <假人名> start break [TickDelay] [TickInterval] [DoNumber]` | `/bot action bot_01 start break 0 20 -1` |
-| 丢出背包物品 | `/bot action <假人名> start drop` | `/bot action bot_01 start drop` |
-| 自动钓鱼 | `/bot action <假人名> start fish [TickDelay] [TickInterval] [DoNumber]` | `/bot action bot_01 start fish 0 20 -1` |
-| 跳跃 | `/bot action <假人名> start jump [TickDelay] [TickInterval] [DoNumber]` | `/bot action bot_01 start jump 0 20 -1` |
-| 注视玩家 | `/bot action <假人名> start look <玩家名>` | `/bot action bot_01 start look Steve` |
-| 注视坐标 | `/bot action <假人名> start look <X> <Y> <Z>` | `/bot action bot_01 start look 100 64 -20` |
-| 设置朝向 | `/bot action <假人名> start rotation <Yaw> <Pitch>` | `/bot action bot_01 start rotation 90 30` |
-| 下蹲 | `/bot action <假人名> start sneak` | `/bot action bot_01 start sneak` |
-| 游泳 / 浮起 | `/bot action <假人名> start swim` | `/bot action bot_01 start swim` |
-| 模拟右键 | `/bot action <假人名> start use_auto [TickDelay] [TickInterval] [DoNumber] [UseTickTimeout]` | `/bot action bot_01 start use_auto 0 20 -1 -1` |
-| 使用主手物品 | `/bot action <假人名> start use [TickDelay] [TickInterval] [DoNumber] [UseTickTimeout]` | `/bot action bot_01 start use 0 20 -1 -1` |
-| 使用副手物品 | `/bot action <假人名> start use_offhand [TickDelay] [TickInterval] [DoNumber] [UseTickTimeout]` | `/bot action bot_01 start use_offhand 0 20 -1 -1` |
-| 对方块使用主手物品 | `/bot action <假人名> start use_on [TickDelay] [TickInterval] [DoNumber] [UseTickTimeout]` | `/bot action bot_01 start use_on 0 20 -1 -1` |
-| 对方块使用副手物品 | `/bot action <假人名> start use_on_offhand [TickDelay] [TickInterval] [DoNumber] [UseTickTimeout]` | `/bot action bot_01 start use_on_offhand 0 20 -1 -1` |
-| 对实体使用主手物品 | `/bot action <假人名> start use_to [TickDelay] [TickInterval] [DoNumber] [UseTickTimeout]` | `/bot action bot_01 start use_to 0 20 -1 -1` |
-| 对实体使用副手物品 | `/bot action <假人名> start use_to_offhand [TickDelay] [TickInterval] [DoNumber] [UseTickTimeout]` | `/bot action bot_01 start use_to_offhand 0 20 -1 -1` |
-
-## 语音聊天
-
-| 功能 | 命令格式 | 例子 |
-| --- | --- | --- |
-| 查看语音聊天命令 | `/voicechat help` | - |
-| 邀请玩家加入当前语音组 | `/voicechat invite <玩家名>` | `/voicechat invite Steve` |
-| 加入语音组 | `/voicechat join <组名>` | `/voicechat join base` |
-| 加入指定 ID 的语音组 | `/voicechat join <组ID>` | `/voicechat join 00000000-0000-0000-0000-000000000000` |
-| 离开当前语音组 | `/voicechat leave` | - |
+请求被接受并不代表一定能立即传送。如果被移动的玩家仍处于冷却中、资源不足或目标世界受限，传送依然会失败，按照聊天提示处理即可。
